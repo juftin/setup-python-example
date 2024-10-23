@@ -3,12 +3,14 @@ on:
   push:
     branches:
       - main
+      - test
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Setup Python
+        id: python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -18,3 +20,5 @@ jobs:
         run: pipx --version
       - name: Install Python Package
         run: pipx install .
+        env:
+          PIPX_DEFAULT_PYTHON: ${{ steps.python.outputs.python-path }}
