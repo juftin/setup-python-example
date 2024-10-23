@@ -14,11 +14,12 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Get Python version
-        run: python --version
-      - name: Get pipx version
-        run: pipx --version
+      - name: Add pipx to PATH
+        if: github.actor == 'nektos/act'
+        run: echo "/root/.local/bin" >> ${GITHUB_PATH}
       - name: Install Python Package
         run: pipx install .
         env:
           PIPX_DEFAULT_PYTHON: ${{ steps.python.outputs.python-path }}
+      - name: Test CLI
+        run: example
